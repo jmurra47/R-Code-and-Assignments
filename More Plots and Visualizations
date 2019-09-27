@@ -1,0 +1,162 @@
+# Plots in R
+Jennifer Murray
+
+# first get mtcars data in a data frame
+mtcars.df <- mtcars
+
+# Base R plots
+
+# Scatter plot
+plot(mtcars.df)  # scatter plots of each variable against other variables
+
+# scatter plots of specific variables
+plot(mtcars.df$hp, mtcars.df$disp)
+
+# scatter plot with customized title, x and y labels
+plot(mtcars.df$hp, mtcars.df$disp, main = "HP vs Displacement", xlab = "Horsepower", ylab = "Displacement")
+
+#color is forest green, pch changes shape, las does something
+plot(mtcars.df$hp, mtcars.df$disp, main = "Hp vs Displacement",
+     xlab = "HP", ylab = "Displacement",
+     col = "forest green", pch = 15, las = 1)
+
+
+
+# scatter plot with different shapes using pch, outline color and background fill color
+plot(mtcars.df$hp, mtcars.df$disp, pch = 15, col = "red", bg = "red")
+
+# las = 1 sets the y labels to display horizontal to x axis
+plot(mtcars.df$hp, mtcars.df$disp, col = mtcars.df$am, las = 1)
+
+
+
+#Histograms
+# histogram with 20 bins
+hist(mtcars.df$disp, nclass = 20)
+
+# histogram with 20 breakpoints (similar to specifying bins, but breaks can be set uneven)
+hist(mtcars.df$disp, breaks = 20)
+
+# histogram with more options
+hist(mtcars.df$mpg, 
+     main="Histogram for MPG of Cars", 
+     xlab="MPG", ylab = "Frequency",
+     border="dark red", 
+     col="limegreen", 
+     xlim=c(10,35),
+     nclass = 10 
+)
+
+
+#barplot
+#bar plot of number of cars in each cyl class
+# first aggregate the numbers by using the table() function
+cyl.table1 <- table(mtcars.df$cyl)
+cyl.table1
+
+#barplot
+barplot(cyl.table1,
+        main = "Frequency of Cylinders",
+        xlab = "Number of Cylinders",
+        ylab = "Frequency",
+        col = "orange")
+
+#barplot horizontal
+barplot(cyl.table1,
+        main = "Frequency of Cylinders",
+        xlab = "Number of Cylinders",
+        ylab = "Frequency",
+        col = "salmon",
+        horiz = TRUE)
+
+# pie charts
+# pie charts in r
+pie(cyl.table1, labels = c("4 cyl", "6 cyl", "8 cyl"),
+    main = "Distribution of cars by cylinders",
+    col = c("Salmon", "Bisque", "medium orchid"))
+
+
+#gg plot
+install.packages("ggplot2")
+library("ggplot2")
+
+
+#convert parking column into table (housedata.csv)
+parking.table <- table(HouseData$Parking)
+barplot(parking.table,
+        main = "Houses by Parking Type",
+        xlab = "Number of houses",
+        ylab = "Parking type",
+        col = "maroon4",
+        horiz = TRUE,
+        las = 1)
+
+
+#ggplot, all functions begind with "ggplot()"
+#geom_point() scatter plot
+#labels()
+
+iris.df <- data.frame(iris)
+# Scatter plot of petal length and sepal length
+ggplot(data=iris.df) + #this + needs to be on the same line as ggplot
+  geom_point(mapping = aes(x=Petal.Length, y=Sepal.Length), color = "orchid")
+
+
+
+ggplot(data=iris.df) + #this + needs to be on the same line as ggplot
+  geom_point(mapping = aes(x=Petal.Length, y=Sepal.Length, 
+             color = Species)) +
+  labs(title="Speal length vs Petal length", x="Petal Length", y="Speal Length")
+
+
+
+ggplot(data=iris.df) +
+  geom_histogram(mapping = aes(x=Petal.Length,
+              color = Species), binwidth = .1) +
+  labs(title="This is a goddamn chart", x="Petal Length", y="What the fuck ever")
+
+x<-ggplot(data=iris.df) +
+  geom_histogram(mapping = aes(x=Petal.Length,
+                               color = Species), binwidth = .1)
+x +   labs(title="This is a goddamn chart", x="Petal Length", y="What the fuck ever")
+
+
+
+
+ggplot(data=iris.df) + #this + needs to be on the same line as ggplot
+  geom_point(mapping = aes(x=Petal.Length, y=Sepal.Length, 
+                           color = Species)) +
+  labs(title="Speal length vs Petal length", x="Petal Length", y="Speal Length") +
+  facet_wrap( ~ Species)
+
+
+
+
+house <- HouseData
+ggplot(house) +
+  geom_point(mapping = aes(x=Builtup, y=price, color = City_Category)) +
+  labs(title = "Builtup vs Price", x = "Builtup area", y= "price")
+
+ggplot(data = iris.df) +
+  geom_histogram(mapping=aes(Petal.Length), binwidth = .1, col="blue",bg="yellow") +
+  labs(title = "I'm Bored", x="so very bored", y="can't even define my level of boredom")
+
+
+
+#bar plot
+ggplot(house) +
+  geom_bar(mapping=aes(Parking), color = "Sky Blue", bg="Orchid") +
+  labs(title = "HOLY SHIT A GRAPH", x="X",y="Fart")
+
+#bar plot for city category
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category), color = "Pink", bg="yellow")+
+  labs(title = "It's exactly the same code as all the others", x="who would have guessed it", y="no fucking way")+
+  coord_flip()
+
+#side-by-side bar plots with two categorical variables
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category, fill = Parking)
+           position = position_dodge())+
+  labs(title = "It's exactly the same code as all the others", x="who would have guessed it", y="no fucking way")+
+  coord_flip()
