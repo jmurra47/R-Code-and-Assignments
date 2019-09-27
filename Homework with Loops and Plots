@@ -1,0 +1,91 @@
+Homework for Programming Class
+Jennifer Murray
+
+getwd()
+setwd("C:/Users/j555m/Desktop")
+
+order.df <- read.csv("orders_nomissing.csv", stringsAsFactors = TRUE)
+View(order.df)
+
+#find number of rows in order.df
+n <- nrow(order.df)
+
+# for number 1, create a new column named profit_margin_flag with specifications
+# first set the column equal to blank
+
+order.df$profit_margin_flag <- ""
+
+for (i in (1:n))
+{ 
+  # first deal with if profit margin is negative
+  if(order.df$Profit[i] / order.df$Sales[i] < 0)
+{
+  order.df$profit_margin_flag[i] <- "negative"
+} else if (order.df$Profit[i] / order.df$Sales[i] < .10)
+{
+  order.df$profit_margin_flag[i] <- "low margin"
+} else if (order.df$Profit[i] / order.df$Sales[i] < .50)
+{
+  order.df$profit_margin_flag[i] <- "standard margin"
+} else if (order.df$Profit[i] / order.df$Sales[i] >= .50)
+{
+  order.df$profit_margin_flag[i] <- "high margin"
+}
+
+}
+
+
+# for number 2, create another column named shipping_surcharge based on computing other columns
+
+# first set new column to blank
+order.df$shipping_surcharge <- ""
+
+for (i in (1:n))
+{
+  if(order.df$Market[i] == "US" | order.df$Market[i] == "Canada" | order.df$Market[i] == "LATAM" & order.df$Sales[i] < 200)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.10
+  } else if (order.df$Market[i] == "US" | order.df$Market[i] == "Canada" | order.df$Market[i] == "LATAM" & order.df$Sales[i] >= 200)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.15
+  } else if (order.df$Market[i] == "EMEA" | order.df$Market[i] == "EU" | order.df$Market[i] == "Africa" & order.df$Sales[i] < 250)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.15
+  } else if (order.df$Market[i] == "EMEA" | order.df$Market[i] == "EU" | order.df$Market[i] == "Africa" & order.df$Sales[i] >= 250)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.25
+  } else if (order.df$Market[i] == "APAC" & order.df$Sales[i] < 150)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.20
+  } else if (order.df$Market[i] == "APAC" & order.df$Sales[i] >= 150)
+  {
+    order.df$shipping_surcharge[i] <- order.df$Sales[i]*.30
+  }
+    }
+
+# for number 3, use imported dataset to create following R plots
+
+# scatter plot of Sales and Profit columns
+
+order.sub <- subset(order.df, Category == "Office Supplies" & Market == "APAC")
+order.sub
+
+#plotting
+plot(order.sub$Sales, order.sub$Profit, main = "Sales vs Profit", 
+     xlab = "Sales", ylab = "Profit", col = "blue")
+
+#plotting using ggplot
+gg <- ggplot(order.sub, aes(Sales, Profit)) 
+gg +  geom_point(col = "blue") + ggtitle("The Relationship Between Sales and Profit")
+
+# creating a stacked bar plot based on numbers of order
+# within each market
+order.table <- table(order.df$Category, order.df$Market, dnn = c("Category", "Market"))
+order.table
+
+
+barplot(order.table, main = "Frequency by Order", xlab = "Market", ylab = "Frequency", col=c("lightblue", "blue", "darkblue"), horiz = FALSE)
+
+# side by side barplot
+barplot(order.table, ylab="Frequency", xlab="Market", main="Side-By-Side Bar Chart", 
+        col=c("lightblue", "blue", "darkblue"), beside=TRUE)
