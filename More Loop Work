@@ -1,0 +1,55 @@
+Loop In-Class Work
+Jennifer Murray
+
+# x1 is the variable stating the weight of a package to be shipped by grams
+# sc is the shipping cost variable
+
+# when x1 < 100, sc is $1.50
+# when x1 is between 100 and 250, sc is $2.50
+# when x1 is between 250 and 500, sc is $3.50
+# when x1 is 500 or greater, sc is $5.00
+
+# for example, if we make x1 equal to 200 to test a value (not required in instructions)
+
+x1 <- 200
+
+if(x1 < 100)
+{
+  sc <- 1.50
+  message("shipping cost is $1.50")
+} else if(x1 < 250)
+{
+  sc <- 2.50
+  message("shipping cost is $2.50")
+} else if(x1 < 500)
+{
+  sc <- 3.50
+  message("shipping cost is $3.50")
+} else
+{ 
+  sc <- 5.00
+  message("shipping cost is $5.00")
+}
+
+# because 200 is greater than 100gm and less than 250 gm, the sc is $2.50
+
+
+
+# create a vector of full names of the months in a year
+
+month.full <- month.name
+
+# Use loop to print the following for each month in the vector
+
+# name of the month
+
+for(month.full in month.name[1:12])
+{
+  message("The month is: ", month.full)
+}
+
+# create a loop to show the number of characters in the month's names
+for(month.full in nchar(month.name[1:12]))
+{
+  message("The number of characters in this month is: ", month.full)
+}
