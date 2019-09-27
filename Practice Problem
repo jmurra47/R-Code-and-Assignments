@@ -1,0 +1,110 @@
+Practice Problems
+Jennifer Murray
+
+# 1.	Assign the built-in dataset "mtcars" to a new data frame variable named appropriately.
+mtcars.df <- data.frame(mtcars)    # mtcars.df <- mtcars is also acceptable
+
+# 2.	Display the structure of the data frame. Display the row names and the column names of the data frame.
+str(mtcars.df)
+rownames(mtcars.df)
+colnames(mtcars.df)
+
+# 3.	Display the number of rows, number of columns, and the column names of the new data frame.
+nrow(mtcars.df)
+ncol(mtcars.df)
+colnames(mtcars.df)
+
+# 4.	Change the column name "cyl" to "cylinders" and "am" to "automatic".
+# "cyl" is column indexed 2 and "am" is indexed 9
+colnames(mtcars.df)[2] <- "cylinders"
+colnames(mtcars.df)[9] <- "automatic"
+
+# 5.	Display the sum and average of the columns "mpg", "gear", "wt" and "disp" from the data frame.
+sum(mtcars.df[,"mpg"])
+mean(mtcars.df[,"mpg"])
+
+sum(mtcars.df[,"gear"])
+mean(mtcars.df[,"gear"])
+
+sum(mtcars.df[,"wt"])
+mean(mtcars.df[,"wt"])
+
+sum(mtcars.df[,"disp"])
+mean(mtcars.df[,"disp"])
+
+# 6.	Add a new column named "hp per cylinder" to the data frame.  
+# The new column should be computed as the column "hp" divided by the column "cyl".
+mtcars.df$hp.per.cylinder <- (mtcars.df$hp / mtcars.df$cylinders)
+
+# 7. Download the file "flightsSeptember.csv", import to a data frame and uncheck "Strings as factors"
+# Then solve the following problems.
+
+# 8.	Display the structure of the data frame. Display the row names and the column names of the data frame.
+str(flights)
+rownames(flights)
+colnames(flights)
+
+# 9.	Display the number of rows, number of columns, and the column names of the new data frame.
+nrow(flights)
+ncol(flights)
+colnames(flights)
+
+# 10.	Display the sum and average of the columns "air_time" and "arr_delay" from the data frame 
+# only for flights leaving JFK with distance less than or equal to 1000 miles.
+
+# For the above problem, the columns "air_time" and "arr_delay" should not have missing values (i.e, NA) 
+# for the sum() and mean() functions to work.  So, first check if the columns have NA with na.fail()
+# Both test below should not return an error message.  
+
+na.fail(flights$air_time)
+na.fail(flights$arr_delay)
+
+# Since both columns return error messages, you can compute sum and average in two ways.
+# a. First option: Use na.omit with the column and assign it to a temp variable.  
+#    Then use the sum & average on the temp variable
+temp_air_time <- na.omit(flights$air_time[(flights$origin == "JFK") & (flights$distance <= 1000)])
+temp_arr_delay <- na.omit(flights$arr_delay[(flights$origin == "JFK") & (flights$distance <= 1000)])
+sum(temp_air_time)
+mean(temp_air_time)
+sum(temp_arr_delay)
+mean(temp_arr_delay)
+
+# The sum of air_time is 270669 mins and average of air_time is 69.778 mins
+# The sum of arr_delay is -8148 mins (i.e., net early arrival) and average is -2.10 mins (i.e., early arrival by 2 mins) 
+
+# b. Second option: Apply sum and average directly on the na.omit function with air_time and arr_delay
+sum(na.omit(flights$air_time[(flights$origin == "JFK") & (flights$distance <= 1000)]))
+mean(na.omit(flights$air_time[(flights$origin == "JFK") & (flights$distance <= 1000)]))
+sum(na.omit(flights$arr_delay[(flights$origin == "JFK") & (flights$distance <= 1000)]))
+mean(na.omit(flights$arr_delay[(flights$origin == "JFK") & (flights$distance <= 1000)]))
+
+# 11.	Add a new column "total delay" to the above data frame.  "total delay" should be the sum of departure delay and arrival delay.
+flights$total_delay <- flights$dep_delay + flights$arr_delay
+
+# 12.	Add another column named "airtime in hours" which should be computed as air time divided by 60 
+# (since the air time in the dataset is in minutes).
+flights$airtime_in_hours <- (flights$air_time / 60)
+
+# 13. Selecting data from data frame
+# a.	All the columns for flights leaving from JFK or EWR.
+flights[flights$origin == "JFK" | flights$origin == "EWR", ]
+
+# b.	All the columns for flights leaving from JFK and arriving at ORD.
+flights[flights$origin == "JFK" & flights$dest == "ORD", ]
+
+# c.	The last 10 columns for flights whose distance is greater than or equal to 1000 miles.
+# compute number of columns
+flights[flights$distance >= 1000, ((ncol(flights)-9):ncol(flights))]
+
+# the above can also be solved by first computing number of columns in a variable and using that in the selection
+columns <- ncol(flights)
+flights[flights$distance >= 1000, ((columns-9):columns)]
+
+# d.	The first 10 columns for flights whose airtime is less than or equal to 120 minutes.
+flights[flights$air_time <= 120, (1:10)]
+
+# e.	The first 5 columns and the last 4 columns for flights for the carriers UA, AA, and EV. 
+flights[(flights$carrier == "UA" | flights$carrier == "AA" | flights$carrier == "EV"), c(1:5, (columns -3):columns) ]
+
+# f.	Columns year, month, day, flight, and arrival delay for flights leaving LGA with departure delay more than 240 minutes.
+flights[(flights$origin == "LGA" & flights$dep_delay >= 240), c("year", "month", "day", "flight", "arr_delay")]
