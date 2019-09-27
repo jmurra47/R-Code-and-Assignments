@@ -1,0 +1,75 @@
+Strings and Factors within RStudio
+Jennifer Murray
+
+class.names <- c("Emily Grant", "John Smith", "Sarah Parks")
+month.vector <- month.name[3:12]
+
+# if you need specific months make it month.name[c(1,3,5)]
+
+#display vectors
+class.names
+month.vector
+
+# number of elements in vector
+length(class.names)
+
+#length of each element in the string vector
+nchar(class.names)
+
+# extracting substring
+month.vector.abb <- substr(month.vector, 1, 3)
+month.vector.abb
+
+substr(month.vector[1], 1, 3)
+
+#change rhw case of the string
+toupper(class.names) # convert to all upper case
+tolower(class.names) # convert to all lower case
+
+# split string
+strsplit(class.names, "")
+
+# Factors
+# view titanic data
+
+View(Titanic)
+
+# structur of dataset
+str(Titanic)
+str(iris)
+
+# to see if a vector is a factor
+is.factor(iris$Species)
+
+class(iris)
+
+titanic.data <- data.frame(Titanic)
+class(titanic.data)
+
+# check if Age in titanic is a factor
+is.factor(titanic.data$Age)
+str(titanic.data)
+
+is.factor(class.names)
+
+# change character name to a facor
+class.name.factor <- as.factor(class.names)
+is.factor(class.name.factor)
+str(class.name.factor)
+
+#selecting rows and columns in data frame
+#get iris dataset as a data frame
+iris.df <- data.frame(iris)
+
+# select rows with Species = "setosa" all cols
+iris.df[iris.df$Species == "setosa",]
+
+# select rows with Species = "setosa" and first three cols
+iris.df[iris.df$Species == "setosa",(1:3)]
+
+# select rows with Species = "setosa" and cols 2, 5
+iris.df[iris.df$Species == "setosa",c(2,5)]
+
+# select rows with Species = "setosa" and Sepal.Length > 5
+# and cols 1,2,5
+iris.df[iris.df$Species == "setosa" & (iris.df$Sepal.Length) > 5,(1:3)]
