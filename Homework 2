@@ -1,0 +1,70 @@
+Homework assignment performed in RStudio
+Jennifer Murray
+
+# import data set and create a variable where strings are stored as factors
+fifa_ranking.df <- read.csv("fifa_ranking.csv", stringsAsFactors = TRUE)
+
+# display the structure of the data frame
+str(fifa_ranking.df)
+
+# examine first 6 rows of data frame
+head(fifa_ranking.df, 6)
+
+# display column names of the data frame
+colnames(fifa_ranking.df)
+
+# find out how many factor levels are found for each of the columns stored as factors
+
+unique(fifa_ranking.df$country_full)
+# 216 levels
+
+unique(fifa_ranking.df$country_abrv)
+# 216 levels
+
+unique(fifa_ranking.df$confederation[3])
+# 6 factors
+
+unique(fifa_ranking.df$rank_date)
+# 286 levels
+
+# modify column name for "country_full" to "country"
+colnames(fifa_ranking.df)[2] <- "country"
+
+# modify column name for "confederation" to "league"
+colnames(fifa_ranking.df)[15] <- "league"
+
+View(fifa_ranking.df)
+
+# Display sum, average, maximum values for total_points with specific qualifications
+
+sum(fifa_ranking.df$total_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+mean(fifa_ranking.df$total_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+max(fifa_ranking.df$total_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+# Display sum, average, maximum values for previous_points with specific qualifications
+
+sum(fifa_ranking.df$previous_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+mean(fifa_ranking.df$previous_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+max(fifa_ranking.df$previous_points[fifa_ranking.df$league == "UEFA" & fifa_ranking.df$rank <= 10])
+
+# add a new column new_points to data frame
+fifa_ranking.df$new_points <- (fifa_ranking.df$total_points - fifa_ranking.df$previous_points)
+
+# display new column
+fifa_ranking.df[fifa_ranking.df$new_points < 0,]
+
+# display columns for Germany, Sweden, and Italy
+fifa_ranking.df$country[fifa_ranking.df$country == c("Germany", "Sweden", "Italy")]
+
+# total_points, new points, rank, rank change, league for countries ranking between 10 and 15
+fifa_ranking.df[(fifa_ranking.df$rank >= 10 & fifa_ranking.df$rank <= 15), c("total_points", "new_points", "rank", "rank_change", "league")]
+
+# first 5 columns and last 3 columns for countries with total_points greater than 0
+fifa_ranking.df[(fifa_ranking.df$total_points >0), c(1:5, 14:17)]
+
+# rank, abb. country name, league, rank date for countries in AFC and CONCACAF
+fifa_ranking.df[(fifa_ranking.df$league == c("AFC","CONCACAF")), c("rank", "country_abrv", "league", "rank_date")]
