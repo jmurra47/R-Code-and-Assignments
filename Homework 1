@@ -1,0 +1,58 @@
+Homework Assignment in RStudio
+Jennifer Murray
+
+# normal distribution of 30 numbers from a normal distribution with mean of 25 and sd of 2.5
+rnorm.vector <- rnorm(30, mean = 25, sd = 2.5)
+rnorm.vector
+
+# create a logical vector for each element greater than or equal to 25, true = yes, false = no
+rnorm.logical.vector <- (rnorm.vector >= 25)
+rnorm.logical.vector
+
+# select only elements with values within +- 2 standard deviations of the mean
+rnorm.select.vector <- rnorm.vector[abs(rnorm.vector - mean(rnorm.vector)) <= (2*sd(rnorm.vector))]
+rnorm.select.vector
+
+# mean of rnorm.vector
+mean(rnorm.vector)
+
+# median of rnorm.vector
+median(rnorm.vector)
+
+# sd of rnorm.vector
+sd(rnorm.vector)
+
+# mean of rnorm.select.vector
+mean(rnorm.select.vector)
+
+# median of rnorm.select.vector
+median(rnorm.select.vector)
+
+# sd of rnorm.select.vector
+sd(rnorm.select.vector)
+
+# create a 12x5 matrix of numbers drawn from a normal distribution with mean = 50 and sd = 7.5
+rnorm.vector2 <- rnorm(60, mean = 50, sd = 7.5)
+rnorm.vector2
+rnorm.matrix <- matrix(rnorm.vector2, nrow = 12, ncol = 5, byrow = TRUE)
+rnorm.matrix
+
+# change column names and row names of matrix
+colnames(rnorm.matrix) <- c("Charlotte", "Phoenix", "Dallas", "Boston", "Atlanta")
+rownames(rnorm.matrix) <- month.abb
+
+# create another matrix with values between +- 3 standard deviations of the mean of rnorm.matrix
+rnorm.select.vector2 <- rnorm.matrix[abs(rnorm.matrix - mean(rnorm.matrix)) <= (3*sd(rnorm.matrix))]
+rnorm.select.vector2
+rnorm.select.matrix <- matrix(rnorm.select.vector2, nrow = 12, ncol = 5, byrow = TRUE)
+rnorm.select.matrix
+
+# combine rows of rnorm.select.matrix to rnorm.matrix
+rnorm.combined.matrix <- rbind(rnorm.matrix, rnorm.select.matrix) 
+rnorm.combined.matrix
+
+# display from rnorm.matrix the even numbered rows and odd numbered columns
+rnorm.matrix[c(2,4,6,8,10,12), c(1,3,5)]
+
+# display only columns from rnorm.matrix with Phoenix, Dallas, Atlanta
+rnorm.matrix[,c("Phoenix", "Dallas", "Atlanta")]
