@@ -1,0 +1,109 @@
+Practice with Loops
+Jennifer Murray
+
+# 20 values from 20 random normal distributions
+
+v1 <- (1:20)
+
+for (i in (1:20))
+{
+  # random normal distribution of 30 numbers with mean starting at 10 multiple of 5
+  # in the loop, i = 1, 2, 3, 4,, 5 etc.
+  # need to get 10, 15, 20, 25, etc. from the above series
+  
+  mean1 <- (i+1)*5
+  sd1 <- 0.1 * mean1
+  
+  nd <- rnorm(30, mean = mean1, sd = sd1)
+  v1[i] <- var(nd)  # variance of the generated normal distribution
+
+}
+
+# display the vector
+v1
+
+# display the sum, mean and median of the vector
+sum(v1)
+mean(v1)
+median(v1)
+
+# compact code for the for loop, but at this early stage of your learning,
+# I strongly discourage this coding
+for (i in (1:20))
+{
+  v1[i] <- var(rnorm(30, mean = (i+1)*5, sd = (i+1)*5*0.10))
+  
+}
+
+
+# Practice Problem 2
+# generate a matrix from 20 random normal distributions
+
+matrix1 <- matrix(1:80, ncol = 4)
+matrix1
+
+for (i in (1:20))
+{
+  # random normal distribution of 30 numbers with mean starting at 10 multiple of 5
+  # in the loop, i = 1, 2, 3, 4,, 5 etc.
+  # need to get 10, 15, 20, 25, etc. from the above series
+  
+  mean1 <- (i+1)*5
+  sd1 <- 0.1 * mean1
+  nd <- rnorm(30, mean = mean1, sd = sd1)
+  
+  matrix1[i, 1] <- mean(nd)
+  matrix1[i, 2] <- sd(nd)
+  matrix1[i, 3] <- min(nd)
+  matrix1[i, 4] <- max(nd)
+  
+}
+
+colnames(matrix1) <- c("Mean", "Std Dev", "Minimum", "Maximum")
+
+matrix1
+
+
+# Practice Problem 3
+# we need to import the flightsSeptember.csv dataset
+# check if dataset has missing values
+na.fail(flights)
+
+# we are not looking to find where the missing values are
+# so best option is to use the na.omit() function
+# na.omit() drops the entire row if any value is missing in that row
+flights <- na.omit(flights)
+
+# find the number of rows
+n <- nrow(flights)
+# create a new column in flights and set it to blank
+flights$dep_delay_flag <- ""
+
+for (i in (1:n))
+{
+  # let us first deal with negative departure delays, i.e. early departures
+  if((flights$origin[i] == "JFK" | flights$origin[i] == "EWR") & flights$dep_delay[i] < 0)
+  {
+    flights$dep_delay_flag[i] <- "Early_A"
+    
+  } else if (flights$origin[i] == "LGA" & flights$dep_delay[i] < 0)
+  {
+    flights$dep_delay_flag[i] <- "Early_B"
+  }
+  
+  # now we can focus on positive departure delay values
+  # we have three ranges, 0-15, 15-60, and >60
+
+  if(flights$dep_delay[i] > 0 & flights$dep_delay[i] < 15)
+  {
+    flights$dep_delay_flag[i] <- "Standard"
+    
+  } else if (flights$dep_delay[i] > 0 & flights$dep_delay[i] < 60)
+  {
+    flights$dep_delay_flag[i] <- "Moderate"
+  } else if (flights$dep_delay[i] > 0)
+  {
+    flights$dep_delay_flag[i] <- "Severe"
+  }
+  
+}
