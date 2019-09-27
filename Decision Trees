@@ -1,0 +1,84 @@
+Building my first decision tree in RStudio
+Jennifer Murray
+
+install.packages("rpart")
+install.packages("rpart.plot")
+install.packages("ROCR")
+install.packages("ggplot2")
+install.packages("caret")
+
+library(ROCR)
+library(ggplot2)
+library(rpart)
+library(rpart.plot)
+library(caret)
+
+getwd()
+setwd("C:/Users/j555m/Desktop/R files")
+
+mydata <- read.table("salary_data.csv", sep=",", header=T, strip.white = T, na.strings = c("NA","NaN","","?"))
+View(mydata)
+mydata <- mydata[complete.cases(mydata),]
+head(mydata)
+summary(mydata)
+str(mydata)
+
+mydata <- mydata[complete.cases(mydata),]
+
+mydata$fnlwgt <- NULL
+mydata$education.num <- NULL
+mydata$relationship <- NULL
+mydata$salary.class <- ifelse(mydata$salary.class == "<=50K", 0, 1)
+mydata$salary.class <- as.factor(mydata$salary.class)
+## Note: Since categorical variables enter into statistical models differently than continuous variables, storing data as factors insures that the modeling functions will treat such data correctly:
+mydata$education <- as.factor(mydata$education)
+mydata$edu <- as.numeric(as.factor(mydata$education))
+mydata$martital.status <- as.factor(mydata$martital.status)
+mydata$occupation <- as.factor(mydata$occupation)
+mydata$race <- as.factor(mydata$race)
+mydata$sex <-as.factor(mydata$sex)
+mydata$native.country <- as.factor(mydata$native.country)
+summary(mydata)
+class(mydata$salary.class)
+
+## Create the training and test data:
+n = nrow(mydata) # n will be ther number of obs. in data
+trainIndex = sample(1:n, 
+                    size = round(0.7*n), 
+                    replace=FALSE) # We create an index for 70% of obs. by random
+train_data = mydata[trainIndex,] # We use the index to create training data
+test_data = mydata[-trainIndex,] # We take the remaining 30% as the testing data
+summary(train_data)
+summary(test_data)
+
+
+## Build decision trees:
+tree1 <- rpart(salary.class ~ edu + sex + race, data = train_data)
+summary(tree1) # detailed summary of splits
+printcp(tree1) # display the results 
+plotcp(tree1) # visualize cross-validation results 
+plot(tree1, uniform=TRUE, 
+     main="Classification Tree for Salary Data")
+text(tree1, use.n=TRUE, all=TRUE, cex=.8)
+
+
+rpart.plot(tree1) # Create a better looking decision tree. Each node shows: 1-the predicted class (below or above 50k), 2- the predicted probability of income above 50k, 3- the percentage of observations in the node.
+
+tree_full <- rpart(salary.class ~ edu + sex + race, data = train_data, 
+                   method="class",
+                   parms = list(split = "information"), 
+                   control=rpart.control(minsplit=2, minbucket=1, maxdepth = 15, cp = 0.001))
+
+# Note: The complexity parameter (cp) is used to control the size of the decision tree and to select the optimal tree size. If the cost of adding another variable to the decision tree from the current node is above the value of cp, then tree building does not continue.
+rpart.plot(tree_full)
+
+## Model Evaluation:
+predicted_values <- predict(tree_full, test_data, type= "prob") # Use the classifier to make the predictions
+
+head(predicted_values)
+threshold <- 0.5
+pred <- factor( ifelse(predicted_values[,2] > threshold, 1, 0))
+head(pred)
+levels(test_data$salary.class)[2]
+confusionMatrix(pred, test_data$salary.class, 
+                positive = levels(test_data$salary.class)[2])
