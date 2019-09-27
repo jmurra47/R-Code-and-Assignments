@@ -1,0 +1,79 @@
+Assignment for Business Analytics II
+Jennifer Murray
+
+getwd()
+setwd("C:/Users/j555m/Desktop/R files")
+library(ggplot2)
+install.packages("ggplot2")
+
+# reading the data
+adult.data <- read.csv("adult.data.csv")
+View(adult.data)
+
+# how many attributes and records
+str(adult.data)
+
+# 15 different attributes
+# 32,561 records
+
+# finding the range of values for attributes
+
+range(adult.data$education_num)
+
+# 1-16
+
+range(adult.data$capital_loss)
+
+# 0-4356
+
+range(adult.data$hours_per_week)
+
+# 1-99
+
+# Detecting missing values
+
+summary(adult.data)
+
+# attributes with "?" include workclass, native_country, occupation
+
+# finding type of attributes
+
+typeof(adult.data$age)
+
+typeof(adult.data$workclass)
+
+typeof(adult.data$education)
+
+typeof(adult.data$class)
+
+# mean and sd of Capital gain
+
+mean(adult.data$capital_gain)
+sd(adult.data$capital_gain)
+
+# categories in variable occupation
+
+str(adult.data$occupation)
+summary(adult.data$occupation)
+
+# create new attribute called log_age which is the log of age
+
+adult.data$log_age <- log(adult.data$age)
+
+# histogram for attribute age
+
+ggplot(data=adult.data, aes(adult.data$age)) + geom_histogram()
+
+# histogram for new attribtue log_age
+
+ggplot(data=adult.data, aes(adult.data$log_age)) + geom_histogram()
+
+# scatterplot graph with attributes education_num and capital_gain
+
+ggplot(adult.data, aes(x=adult.data$education_num, y=adult.data$capital_gain)) + geom_point()
+
+# boxplot graph with attributes class and education_num
+
+ggplot(adult.data, aes(x=adult.data$class, y=adult.data$education_num)) + 
+  geom_boxplot(outlier.colour="red", outlier.shape=8,
+               outlier.size=4)
