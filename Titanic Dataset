@@ -1,0 +1,50 @@
+Titanic Dataset
+Jennifer Murray
+
+# Assign the dataset "Titanic" to a new data frame variable named appropriately. Display the structure of the data frame.
+class(Titanic)
+titanic.df <- data.frame(Titanic)
+titanic.df
+
+# 2.	Display the number of rows, number of columns, and the column names of the new data frame.
+nrow(titanic.df)
+ncol(titanic.df)
+
+# 3.	From the Titanic data frame, select and display the data according to each of the specifications below:
+#     a.	All the columns for passengers who survived.
+titanic.df[titanic.df$Survived == "Yes", ]
+
+#     b.	All the columns for passengers who survived and the number survived was 100 or more.
+titanic.df[(titanic.df$Survived == "Yes") & (titanic.df$Freq >= 100), ]
+
+#    c.	The columns Class, Age, Survived, and Freq for passengers in "1st" or "2nd" class.
+titanic.df[(titanic.df$Class == "1st") | (titanic.df$Class == "2nd"), c("Class", "Age", "Survived", "Freq")]
+
+#    d.	The columns Class, Survived, and Freq for Female passengers who were adults.
+titanic.df[(titanic.df$Sex == "Female") & (titanic.df$Age == "Adult"), c("Class", "Survived", "Freq")]
+
+# 4.	Another built-in dataset is "mtcars" which is data on cars from Motor Trends. 
+# Assign the dataset "mtcars" to a new data frame variable named appropriately. Display the structure of the data frame.
+mtcars.df <- data.frame(mtcars)
+str(mtcars.df)
+
+# 5.	Display the number of rows and number of columns of the above data frame. Display the column names of the above data frame.
+nrow(mtcars.df)
+ncol(mtcars.df)
+colnames(mtcars.df)
+
+# 6.	From the above data frame, select and display the data according to each of the specifications below:
+#     a.	All the columns for 6 cylinder cars with horsepower greater than or equal to 100. 
+#         Add R code to display the number of cars selected with the above condition.
+# For this problem, since the selected data is to be also counted for number of rows, I assign the selection to a variable & display the variable
+(mtcars.select <- mtcars.df[(mtcars.df$cyl == 6) & (mtcars.df$hp >= 100), ])
+nrow(mtcars.select)
+
+#     b.	All the columns for cars with mpg 20 or more and with 5 gears.
+mtcars.df[(mtcars.df$mpg >= 20) & (mtcars.df$gear == 5), ]
+
+# c.	The columns mpg, cyl, disp, and hp for cars with weight greater than 3000 lbs.
+mtcars.df[(mtcars.df$wt > 3), c("mpg", "cyl", "disp", "hp")]
+
+# d.	The columns cyl, wt, am, gear and carb for 4 cylinder cars with displacement of less than 100 cubic inch.
+mtcars.df[(mtcars.df$cyl == 4) & (mtcars.df$disp < 100), c("cyl", "wt", "am", "gear", "carb")]
