@@ -1,0 +1,218 @@
+Creating plots in R with a dataset
+Jennifer Murray
+
+# first assign internal mtcars dataset to a data frame variable
+mtcars.df <- mtcars
+
+# Base R plots
+
+# scatter plots
+# scatter plots of hp and displacement
+plot(mtcars.df$hp, mtcars.df$disp)
+
+# scatter plot with customized title, x and y labels
+plot(mtcars.df$hp, mtcars.df$disp, main = "Hp vs Displacement",
+     xlab = "HP", ylab = "Displacement")
+
+# scatter plot with customized title, x and y labels, with color
+# the pch parameter specifies shape of points
+# the las=1 setting shows y axis label horizontally
+plot(mtcars.df$hp, mtcars.df$disp, main = "Hp vs Displacement",
+     xlab = "HP", ylab = "Displacement",
+     col = "red", pch = 15, las = 1)
+
+
+# histograms
+# histogram with default
+hist(mtcars.df$disp)
+
+# histogram with 10 bins
+hist(mtcars.df$disp, nclass = 15,
+     main = "Histogram of Displacement",
+     xlab = "Displacement", ylab = "Frequency",
+     col = "green")
+
+# histogram for mpg with 15 bins
+hist(mtcars.df$mpg, nclass = 15,
+     main = "Histogram of mpg",
+     xlab = "mpg", ylab = "Frequency",
+     col = "yellow",
+     border = "red")
+
+# bar plots
+# bar plot of number of cars in each cyl class
+# first aggregate the numbers by using the table() function
+cyl.table1 <- table(mtcars.df$cyl)
+cyl.table1
+
+# barplot
+barplot(cyl.table1,
+        main = "Frequency by cylinders",
+        xlab = "Number of cylinders",
+        ylab = "Frequency",
+        col = "blue")
+
+# barplot with horizonal bars
+barplot(cyl.table1,
+        main = "Frequency by cylinders",
+        xlab = "Frequency",
+        ylab = "Number of cylinders",
+        col = "blue",
+        horiz = TRUE)
+
+
+# pie charts
+# pie charts in R
+pie(cyl.table1, labels = c("4 cyl", "6 cyl", "8 cyl"),
+    main = "Distrbution of cars by cylinders",
+    col = c("red", "yellow", "green"))
+
+# get HouseData.csv and import into a data frame
+# convert Parking column into a table
+parking.table <- table(house$Parking)
+
+# barplot with horizonal bars
+barplot(parking.table,
+        main = "Houses by Parking type",
+        xlab = "Parking type",
+        ylab = "Number of houses",
+        col = "blue",
+        las = 1)
+
+
+### ggplot package contains very good functions for visualizations in R
+
+## install and activate ggplot2 package
+
+## we will use builtin iris dataset for ggplot visuals
+# set iris dataset to a data frame variable 
+iris.df <- data.frame(iris)
+
+## scatter plot of petal length and sepal length
+ggplot(data = iris.df) +
+  geom_point(mapping = aes(x = Petal.Length, y = Sepal.Length), 
+             color = "blue") +
+  labs(title = "Petal vs Sepal Length", x = "Petal Length", 
+       y = "Sepal Length")
+
+
+## Some of the parameter settings, such as data=, x=, y= are optional
+## and can be dropped as shown below
+## However, it makes the code harder to read and understand
+ggplot(iris.df) +
+  geom_point(mapping = aes(Petal.Length, Sepal.Length,
+                           color = Species)) +
+  labs(title = "Petal vs Sepal Length", x = "Petal Length", 
+       y = "Sepal Length")
+
+## A ggplot layer or set of layers can be stored in a variable
+# and combined with another layer by adding layer to the variable
+# For example, the above plot can also be executed in the following way
+myplot <- ggplot(iris.df) +
+  geom_point(mapping = aes(Petal.Length, Sepal.Length,
+                           color = Species))
+myplot +   labs(title = "Petal vs Sepal Length", x = "Petal Length", 
+                y = "Sepal Length")
+
+
+## the x and y axes can be re-scaled using xlim(min, max) and ylim(min, max)
+ggplot(iris.df) +
+  geom_point(mapping = aes(Petal.Length, Sepal.Length,
+                           color = Species)) +
+  labs(title = "Petal vs Sepal Length", x = "Petal Length", 
+       y = "Sepal Length") +
+  xlim(0,8) +
+  ylim(2, 10)
+
+
+## scatter plot of petal length and sepal length for different species
+ggplot(iris.df) +
+  geom_point(mapping = aes(Petal.Length, Sepal.Length, color = Species))
+
+
+# scatter plot with main and axis labels
+ggplot(data = iris.df) +
+  geom_point(mapping = aes(x = Petal.Length, y = Sepal.Length,
+                           color = Species)) +
+  labs(title="Sepal length vs Petal length", x="Petal length", y="Sepal length")
+
+
+# scatter plot with individual plot for each Species
+ggplot(data = iris.df) + 
+  geom_point(mapping = aes(x = Petal.Length, y = Sepal.Length, color = Species)) + 
+  labs(title="Sepal length vs Petal length", y="Sepal length", x="Petal length") + 
+  facet_wrap( ~ Species)
+
+# the following examples use HouseData.csv dataset posted on Canvas
+# From Canvas download HouseData.csv
+# Import it to R Studio and name data frame as house
+
+ggplot(house) +
+  geom_point(mapping = aes(x = Builtup, y = price), color = "red") +
+  labs(title = "Builtup vs price", x = "Builtup area", y = "Price")
+
+# show the scatter plot by City_Category
+ggplot(house) +
+  geom_point(mapping = aes(x = Builtup, y = price, color = City_Category)) +
+  labs(title = "Builtup vs price", x = "Builtup area", y = "Price")
+
+
+# histogram of Petal length with binwidth of 0.3
+ggplot(data = iris.df) +  
+  geom_histogram(mapping = aes(Petal.Length), binwidth = 0.3, 
+                 col = "blue", bg = "yellow") +
+  labs(title = "Histogram")
+
+# histogram of Petal length with number of bins specified as 25
+ggplot(data = iris.df) +  
+  geom_histogram(mapping = aes(Petal.Length), bins = 25, 
+                 col = "blue", bg = "yellow") +
+  labs(title = "Histogram")
+
+
+# bar plot of number of houses by Parking from the house dataframe
+ggplot(house) +
+  geom_bar(mapping = aes(Parking), color = "red", bg = "red") +
+  labs(title = "Houses by Parking", x = "Parking Type", y = "Frequency")
+
+# bar plot of number of houses by City categories from the house dataframe
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category), color = "red", bg = "red") +
+  labs(title = "Houses by City Category", x = "City Category", y = "Frequency")
+
+
+# horizontal bar plot of number of houses by City categories from the house dataframe
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category), color = "red", bg = "red") +
+  labs(title = "Houses by City Category", x = "City Category", y = "Frequency") +
+  coord_flip()
+
+# bar plots with two categorical variables - default is stacked bar
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category, fill = Parking)) +
+  labs(title = "Houses by City Category & Parking", x = "City Category", 
+       y = "Frequency")
+
+
+# horizontal bar plots with two categorical variables - default is stacked bar
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category, fill = Parking)) +
+  labs(title = "Houses by City Category & Parking", x = "City Category", 
+       y = "Frequency") +
+  coord_flip()
+  
+
+# side-by-side bar plots with two categorical variables
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category, fill = Parking), 
+           position = position_dodge()) +
+  labs(title = "Houses by City Category & Parking", x = "City Category", 
+       y = "Frequency")
+
+# horizontal side-by-side bar plots with two categorical variables
+ggplot(house) +
+  geom_bar(mapping = aes(City_Category, fill = Parking), 
+           position = position_dodge()) +
+  labs(title = "Houses by City Category & Parking", x = "City Category", 
+       y = "Frequency") +
+  coord_flip()
