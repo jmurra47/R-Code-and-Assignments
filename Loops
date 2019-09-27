@@ -1,0 +1,101 @@
+Learning Loops within RStudio
+
+# Flow control in R
+
+# Conditonal statement in R
+# Let x1 be some value and we want to test if x1 is 25 or more
+# If x1 >= 25, we want to print a message that x1 is 25 or more using message() function
+x1 <- 20
+
+if(x1 >= 25)
+{
+  message("x1 is 25 or more")
+}
+
+# if we want to print a different message when x1 < 25, the else part can be used
+if(x1 >= 25)
+{
+  message("x1 is 25 or more")
+} else
+{
+  message("x1 is less than 25")
+}
+
+### in the above, please note that the else is written right next to 
+### the closing braces of the first part on the same line
+
+# let us do a different example with more than two options 
+# let x1 be quantity bought and we want to compute discount as follows
+# discount = 10% if qty < 10, 15% if qty between 10 & 25, 20% if more than 25
+
+if(x1 < 10)
+{
+  discount <- 0.10
+  message("Discount is 10%")
+} else if(x1 < 25)  # note that by being in this part, x1 can only be more than 10
+{
+  discount <- 0.15
+  message("Discount is 15%")
+} else              # no need to test if x1 >= 25, since this part is 25 or more
+{
+  discount <- 0.20
+  message("discount is 20%")
+}
+
+# if you want to start with highest discount, then the sequence is as follows
+if(x1 >= 25)
+{
+  discount <- 0.20
+  message("Discount is 20%")
+} else if(x1 >= 10)  # this part is < 25 and includes < 10, so we test this way
+{
+  discount <- 0.15
+  message("Discount is 15%")
+} else
+{
+  discount <- 0.10
+  message("Discount is 10%")
+}
+
+# Repeated statements with loop
+# print a message 5 times with a while loop, 
+# with a variable i starting at 1 and increasing everytime inside the loop
+i <- 1
+while(i <= 5)
+{
+  message("this is message number ", i)
+  i <- i + 1
+}
+
+# use of while loop where variable j starts at 10 and decreases everytime inside the loop
+j <- 10
+while(j >= 1)
+{
+  message("this is message number ", j)
+  j <- j - 1
+}
+
+
+# for loop, when the number of times for the loop is pre-determined
+# so, there is no need to increase of decrease the value of the index
+# the statement "i in 1:5" means for each loop, i takes on each value in the sequence
+# i.e., i is 1 first time, 2 the second time, 3 the third time, and so on until 5
+for(i in 1:5)
+{
+  message("this is message number ", i)
+  
+}
+
+# the above loop can be done in reverse order, say from 10 through 1
+for(i in 10:1)
+{
+  message("this is message number ", i)
+}
+
+# another example with for loop
+# here i takes on each letter of the alphabet up to the 10th letter
+# i.e., i is "a" first time in loop, "b" second time, and so on until "j"
+for(i in letters[1:10])
+{
+  message("The letter is ", i)
+}
