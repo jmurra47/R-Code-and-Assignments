@@ -1,0 +1,59 @@
+More Practice Problems
+Jennifer Murray
+
+# 1. Write the R code to create a vector of 20 numbers starting from 3 and in multiples of 3.  
+# Assign the vector to a variable.  Label the elements as the upper case letters of the alphabet. 
+# Display the vector.
+three.multiple <- (1:20)*3
+names(three.multiple) <- LETTERS[1:20]
+three.multiple
+
+# 2.	From the above vector, create another vector which will have only the numbers evenly 
+# divisible by 4.  Assign the vector to a variable.  Label the elements as the lower case 
+# letters of the alphabet.  Display the vector.  
+three.multiple.even <- three.multiple[ (three.multiple %% 4) == 0 ]
+names(three.multiple.even) <- letters[ 1:length(three.multiple.even) ]
+three.multiple.even
+
+# 3.	Create a matrix of 20 by 10 numbers drawn from a normal distribution with 
+# mean value 25 and standard deviation 2.  Assign it to a variable rnorm.matrix1. 
+# Name the columns of this matrix as the last 10 abbreviated month names of the year. 
+# Display the variable.
+rnorm.matrix1 <- matrix( rnorm( 200, mean = 25, sd = 2),
+                         nrow = 20
+                       )
+colnames(rnorm.matrix1) <- month.abb[3:12]
+rnorm.matrix1
+
+# 4.	From the above matrix, select the top 5 rows and assign it to a variable rnorm.matrix2.  
+# Similarly, select the last 5 rows and assign it to a variable rnorm.matrix3.  
+# Combine the rows of matrices rnorm.matrix2 and rnorm.matrix3 to create a new matrix and 
+# assign it to a variable rnorm.final.  Display the 3 matrices created in this task.
+rnorm.matrix2 <- rnorm.matrix1[ 1:5, ]
+rnorm.matrix3 <- rnorm.matrix1[ 16:20, ]
+rnorm.final <- rbind(rnorm.matrix2, rnorm.matrix3)
+
+rnorm.matrix2
+rnorm.matrix3
+rnorm.final
+
+# Strings
+# 5.	The built-in dataset "mtcars" has its row names as the name of each car in the dataset.  
+# Create a string vector of the row names from the built-in dataset "mtcars".  
+# Assign the vector to a variable and display the variable.
+carnames <- rownames(mtcars)
+carnames
+
+# 6.	Display the above vector data in upper case.
+toupper(carnames)
+
+# 7.	Display the number of characters in each car name in the vector.  
+# Then display the total number of characters in the vector. 
+nchar(carnames)
+sum( nchar(carnames) )
+
+# 8.	Display only the first five characters of the last 10 cars in the vector.
+# First get the length of the carnames vector.
+n <- length(carnames)
+# now use n in the index to get the last 10 cars
+substr( carnames[(n-9):n], 1, 5 )
