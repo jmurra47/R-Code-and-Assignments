@@ -1,0 +1,82 @@
+Matrix Work in RStudio
+Jennifer Murray
+
+# Create a matrix of 50 numbers drawn from a normal distribution with mean value 30 
+# and standard deviation 5.  The matrix should have 10 rows and 5 columns. 
+# Assign it to a variable rnorm.matrix. Display the variable.
+rnorm.matrix <- matrix(rnorm(50, mean = 30, sd = 5), nrow = 10)
+rnorm.matrix
+
+# 3. After creating the matrix, name the rows as the first 10 letters of the 
+# alphabet in uppercase.  Name the columns as the last five months (with abbreviated month names)
+rownames(rnorm.matrix) <- LETTERS[1:10]
+colnames(rnorm.matrix) <- month.abb[8:12]
+
+# 4. Display the elements of the first 5 rows of the matrix.  
+rnorm.matrix[ 1:5, ]
+
+# Display the elements of the first 3 columns of the matrix.
+rnorm.matrix[ , 1:3 ]
+
+# 5. Create a matrix of even numbers from 2 through 40 with 4 rows and 5 columns.  
+# Assign it to a variable even.matrix.  Create another matrix of odd numbers from 1 through 39 
+# with 4 rows and 5 columns.  Assign it to a variable odd.matrix.  For each of these matrices, 
+# name the rows as the names of the first four months of the year and name the columns as 
+# the first 10 letters of the alphabet in lowercase.  Assign the row and column names within 
+# the code for creating the matrix, not after the matrix is created.
+
+# even.matrix
+even.matrix <- matrix(
+                        (1:20)*2,
+                        nrow = 4,
+                        dimnames = list(month.name[1:4], letters[1:5])
+                      )
+even.matrix
+
+# odd.matrix
+odd.matrix <- matrix(
+                        (1:20)*2-1,
+                        nrow = 4,
+                        dimnames = list(month.name[1:4], letters[1:5])
+                    )
+odd.matrix
+
+# if the numbers in the above even.matrix are required to flow row-wise,
+# it should be given as below
+even.matrix2 <- matrix(
+                        (1:20)*2,
+                        nrow = 4,
+                        byrow = TRUE,
+                        dimnames = list(month.name[1:4], letters[1:5])
+                      )
+even.matrix2
+
+# 6. Subtract odd.matrix from even.matrix.  What result do you see? Can you explain? 
+# Write your answer as a comment in the R Script window below the R code for this task.
+even.matrix - odd.matrix
+
+# The result of the above operation is all 1s in the matrix.  Each element in the even
+# matrix is adjacent to the corresponding element in the odd matrix.
+# Hence, all values are 1s
+
+# 7. Combine the rows of odd.matrix with that of even.matrix 
+# (i.e., the resulting matrix will have 8 rows and 5 columns). 
+# Assign the result to a variable final.matrix.
+final.matrix <- rbind(odd.matrix, even.matrix)
+
+# 8. Display only the even numbered rows of final.matrix
+final.matrix[ (1:4)*2, ]
+
+# Display only the odd numbered rows of final.matrix
+final.matrix[ (1:4)*2-1, ]
+
+# 9. Create the transpose of odd.matrix and assign it to a variable odd.matrix.t.
+# Multiply odd.matrix with odd.matrix.t using matrix multiplication. 
+# Name the new matrix as odd.multiplied.
+odd.matrix.t <- t(odd.matrix)
+
+odd.multiplied <- odd.matrix %*% odd.matrix.t
+
+# Displaying odd.matrix.t and odd.multiplied
+odd.matrix.t
+odd.multiplied
